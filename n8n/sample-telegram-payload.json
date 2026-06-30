@@ -1,0 +1,11 @@
+{
+  "name": "Sam Builder",
+  "email": "sam@example.com",
+  "project": "AI assistant for customer support",
+  "budget": "$500 to $1,000",
+  "deadline": "within two weeks",
+  "how_found": "Referral",
+  "message": "We want a bot that can answer common customer questions, collect lead details, and hand off urgent cases.",
+  "tools": "Telegram, Google Sheets, Gmail",
+  "channel": "telegram_bot"
+}

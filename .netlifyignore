@@ -1,0 +1,7 @@
+.env
+.env.*
+!.env.example
+.git/
+.playwright-mcp/
+node_modules/
+dist/
