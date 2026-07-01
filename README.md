@@ -2,7 +2,7 @@
 
 Production-ready project intake for AutoLancer, the autonomous freelance pipeline agent for the Global AI Hackathon Qwen Cloud Track 4.
 
-The form keeps Supabase as the source of truth. Every lead is inserted into `public.leads` first, then the exact same lead payload is sent to n8n through a Netlify Function. If n8n fails, the lead remains saved and `n8n_status` is updated to `failed`.
+The form keeps Supabase as the source of truth. Every lead is inserted into `public.leads` first, then the exact same lead payload is sent to n8n through a Netlify Function when `N8N_WEBHOOK_URL` is configured. If n8n is missing or fails, the lead remains saved and the user still sees the success screen with a warning.
 
 ## Connect Supabase and n8n in under 5 minutes
 
@@ -11,13 +11,13 @@ The form keeps Supabase as the source of truth. Every lead is inserted into `pub
    - `SUPABASE_URL`
    - `SUPABASE_ANON_KEY`
    - `SUPABASE_SERVICE_ROLE_KEY`
-   - `N8N_WEBHOOK_URL`
-3. In n8n, create a Webhook trigger that accepts `POST` JSON and copy its production URL into `N8N_WEBHOOK_URL`.
+   - `N8N_WEBHOOK_URL` optional until the n8n backend is ready
+3. Later, in n8n, create a Webhook trigger that accepts `POST` JSON and copy its production URL into `N8N_WEBHOOK_URL`.
 4. Deploy this repository to Netlify. No build command is required.
 5. Submit a test lead and confirm:
    - Supabase has a row in `public.leads`.
-   - n8n receives the same payload.
-   - `n8n_status` becomes `delivered` or `failed`.
+   - n8n receives the same payload once `N8N_WEBHOOK_URL` is configured.
+   - `n8n_status` becomes `delivered`, `failed`, or remains `pending` while n8n is not configured.
 
 ## Files
 
@@ -25,7 +25,8 @@ The form keeps Supabase as the source of truth. Every lead is inserted into `pub
 - `styles.css` - premium dark SaaS interface.
 - `app.js` - validation, loading stages, duplicate-submit protection, success state.
 - `config.js` - shared app configuration and runtime config loading.
-- `supabase.js` - browser Supabase REST insert using the anon key.
+- `lib/lead-schema.js` - canonical lead validation, normalization, enum, and payload contract.
+- `supabase.js` - single reusable browser Supabase client using the public anon/publishable key.
 - `helpers.js` - small reusable utilities.
 - `netlify/functions/config.js` - exposes only public Supabase config to the browser.
 - `netlify/functions/notify-n8n.js` - posts to n8n and updates `n8n_status`.
@@ -41,6 +42,12 @@ npx netlify dev
 ```
 
 Use `.env.example` as the template for `.env`. The service role key is used only inside Netlify Functions and is never sent to the browser.
+
+Verify the lead contract without touching Supabase:
+
+```bash
+npm run verify:lead-schema
+```
 
 ## Lead payload
 

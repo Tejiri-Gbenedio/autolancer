@@ -5,7 +5,7 @@ const headers = {
   "Content-Type": "application/json",
 };
 
-exports.handler = async (event) => {
+export const handler = async (event) => {
   if (event.httpMethod === "OPTIONS") {
     return { statusCode: 204, headers, body: "" };
   }
@@ -18,13 +18,14 @@ exports.handler = async (event) => {
     };
   }
 
-  const { SUPABASE_URL, SUPABASE_ANON_KEY } = process.env;
+  const { SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_PUBLISHABLE_KEY } = process.env;
+  const supabasePublicKey = SUPABASE_PUBLISHABLE_KEY || SUPABASE_ANON_KEY;
 
-  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+  if (!SUPABASE_URL || !supabasePublicKey) {
     return {
       statusCode: 500,
       headers,
-      body: JSON.stringify({ error: "Missing Supabase environment variables." }),
+      body: JSON.stringify({ error: "Missing public Supabase environment variables." }),
     };
   }
 
@@ -33,7 +34,7 @@ exports.handler = async (event) => {
     headers,
     body: JSON.stringify({
       supabaseUrl: SUPABASE_URL,
-      supabaseAnonKey: SUPABASE_ANON_KEY,
+      supabaseAnonKey: supabasePublicKey,
     }),
   };
 };

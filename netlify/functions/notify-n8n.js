@@ -1,3 +1,5 @@
+import { validateLeadForHandoff, formatLeadErrors } from "../../lib/lead-schema.js";
+
 const jsonHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "Content-Type",
@@ -28,11 +30,16 @@ function getSupabaseRestUrl(tableName, query) {
   return `${baseUrl}/rest/v1/${tableName}${query ? `?${query}` : ""}`;
 }
 
+function getMissingStatusUpdateConfig() {
+  return ["SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"].filter((name) => !process.env[name]);
+}
+
 async function updateN8nStatus(leadId, n8nStatus, errorMessage) {
+  const missingConfig = getMissingStatusUpdateConfig();
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-  if (!serviceKey) {
-    throw new Error("Missing SUPABASE_SERVICE_ROLE_KEY for n8n status updates.");
+  if (missingConfig.length > 0) {
+    throw new Error(`Missing ${missingConfig.join(", ")} for n8n status updates.`);
   }
 
   const updatePayload = {
@@ -75,17 +82,13 @@ async function postToN8n(leadPayload) {
   }
 }
 
-exports.handler = async (event) => {
+export const handler = async (event) => {
   if (event.httpMethod === "OPTIONS") {
     return { statusCode: 204, headers: jsonHeaders, body: "" };
   }
 
   if (event.httpMethod !== "POST") {
     return json(405, { error: "Method not allowed." });
-  }
-
-  if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY || !process.env.N8N_WEBHOOK_URL) {
-    return json(500, { error: "Missing Supabase or n8n environment variables." });
   }
 
   let leadPayload;
@@ -95,8 +98,24 @@ exports.handler = async (event) => {
     return json(400, { error: "Invalid JSON payload." });
   }
 
-  if (!leadPayload.lead_id) {
-    return json(400, { error: "Missing lead_id." });
+  const validation = validateLeadForHandoff(leadPayload);
+  if (!validation.success) {
+    return json(400, {
+      error: "Invalid lead payload.",
+      details: validation.errors,
+    });
+  }
+
+  leadPayload = validation.data;
+
+  if (!process.env.N8N_WEBHOOK_URL) {
+    console.warn("AutoLancer n8n handoff skipped: N8N_WEBHOOK_URL is not configured.");
+
+    return json(200, {
+      ok: true,
+      n8n_status: "pending",
+      warning: "Lead was saved, but the n8n webhook is not configured yet. AutoLancer skipped the AI handoff without losing the lead.",
+    });
   }
 
   try {
@@ -111,10 +130,10 @@ exports.handler = async (event) => {
       const statusMessage = statusError instanceof Error ? statusError.message : "Unknown Supabase status update failure.";
       console.error("AutoLancer n8n status update failed:", statusMessage);
 
-      return json(500, {
-        ok: false,
-        error: "Lead was saved, but AutoLancer could not update the n8n handoff status.",
+      return json(200, {
+        ok: true,
         n8n_status: "pending",
+        warning: "Lead was saved, but the n8n handoff failed and AutoLancer could not update the handoff status automatically.",
       });
     }
 
@@ -136,10 +155,10 @@ exports.handler = async (event) => {
     const message = error instanceof Error ? error.message : "Unknown Supabase status update failure.";
     console.error("AutoLancer delivered status update failed:", message);
 
-    return json(500, {
+    return json(200, {
       ok: true,
-      error: "Lead was saved and sent to n8n, but AutoLancer could not mark the handoff as delivered.",
       n8n_status: "pending",
+      warning: "Lead was saved and sent to n8n, but AutoLancer could not mark the handoff as delivered automatically.",
     });
   }
 };

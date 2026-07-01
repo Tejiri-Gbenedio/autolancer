@@ -1,0 +1,11 @@
+{
+  "name": "autolancer-intake-portal",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "verify:lead-schema": "node scripts/verify-lead-schema.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.110.0"
+  }
+}
