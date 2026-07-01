@@ -48,46 +48,9 @@
             <span class="wordmark-tag">Autonomous AI freelance agent</span>
           </span>
         </a>
-        <span class="availability">AI-Powered</span>
       </nav>
 
       <div class="hero-layout">
-        <div class="hero-copy">
-          <p class="eyebrow">Client project intake</p>
-          <h1 id="portal-title">Let&rsquo;s build <span>something</span> exceptional.</h1>
-          <p class="lede">Tell us what you&rsquo;re trying to achieve. We&rsquo;ll handle the rest.</p>
-
-          <ul class="trust-badges" aria-label="AutoLancer benefits">
-            <li class="trust-badge">
-              <span class="badge-icon" aria-hidden="true">
-                <svg viewBox="0 0 20 20" focusable="false">
-                  <path d="m10 2.5 5.5 2v4.7c0 3.1-2 6-5.5 8.3-3.5-2.3-5.5-5.2-5.5-8.3V4.5l5.5-2Z" fill="none" stroke="currentColor" stroke-width="1.6"/>
-                  <path d="m7.6 9.8 1.7 1.8 3.2-3.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </span>
-              <span>Free project review</span>
-            </li>
-            <li class="trust-badge">
-              <span class="badge-icon" aria-hidden="true">
-                <svg viewBox="0 0 20 20" focusable="false">
-                  <path d="M5.5 3.5h6.8l2.2 2.2v10.8H5.5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
-                  <path d="M12.3 3.5v2.6h2.2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-                  <path d="M7.8 10h4.5M7.8 13h4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-                </svg>
-              </span>
-              <span>Tailored proposal</span>
-            </li>
-            <li class="trust-badge">
-              <span class="badge-icon" aria-hidden="true">
-                <svg viewBox="0 0 20 20" focusable="false">
-                  <path d="M10 2.8 4.8 10h3.3L7.3 17.2 14.8 8H11.3L12 2.8Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
-                </svg>
-              </span>
-              <span>Response within 24 hours</span>
-            </li>
-          </ul>
-        </div>
-
         <div class="hero-visual" aria-hidden="true">
           <div class="robot-stage">
             <img
@@ -101,7 +64,43 @@
             >
           </div>
         </div>
+
+        <div class="hero-copy">
+          <p class="eyebrow">Client project intake</p>
+          <h1 id="portal-title">Let&rsquo;s build <span>something</span> exceptional.</h1>
+          <p class="lede">Tell us what you&rsquo;re trying to achieve. We&rsquo;ll handle the rest.</p>
+        </div>
       </div>
+
+      <ul class="trust-badges" aria-label="AutoLancer benefits">
+        <li class="trust-badge">
+          <span class="badge-icon" aria-hidden="true">
+            <svg viewBox="0 0 20 20" focusable="false">
+              <path d="m10 2.5 5.5 2v4.7c0 3.1-2 6-5.5 8.3-3.5-2.3-5.5-5.2-5.5-8.3V4.5l5.5-2Z" fill="none" stroke="currentColor" stroke-width="1.6"/>
+              <path d="m7.6 9.8 1.7 1.8 3.2-3.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span>Free project review</span>
+        </li>
+        <li class="trust-badge">
+          <span class="badge-icon" aria-hidden="true">
+            <svg viewBox="0 0 20 20" focusable="false">
+              <path d="M5.5 3.5h6.8l2.2 2.2v10.8H5.5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+              <path d="M12.3 3.5v2.6h2.2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M7.8 10h4.5M7.8 13h4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <span>Tailored proposal</span>
+        </li>
+        <li class="trust-badge">
+          <span class="badge-icon" aria-hidden="true">
+            <svg viewBox="0 0 20 20" focusable="false">
+              <path d="M10 2.8 4.8 10h3.3L7.3 17.2 14.8 8H11.3L12 2.8Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span>Response within 24 hours</span>
+        </li>
+      </ul>
     </section>
 
     <section class="intake-panel" aria-labelledby="form-title">
@@ -151,7 +150,7 @@
                   <path d="M7.2 8.3h5.6M7.2 11.5h3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
                 </svg>
               </span>
-              <select id="project_type" name="project_type" required aria-describedby="project_type_error">
+              <select id="project_type" name="project_type" required aria-describedby="project_type_error" data-custom-select>
                 <option value="" disabled selected>Select project type</option>
                 <option value="automation">Automation / workflow</option>
                 <option value="web_development">Website / web app</option>
@@ -173,7 +172,7 @@
                   <circle cx="10" cy="10" r="1.4" fill="currentColor"/>
                 </svg>
               </span>
-              <select id="budget_range" name="budget_range" required aria-describedby="budget_range_error">
+              <select id="budget_range" name="budget_range" required aria-describedby="budget_range_error" data-custom-select>
                 <option value="" disabled selected>Select budget range</option>
                 <option value="under_500">Under $500</option>
                 <option value="500_1000">$500 - $1,000</option>
@@ -193,7 +192,7 @@
                   <path d="M10 6.7v3.8l2.6 1.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
                 </svg>
               </span>
-              <select id="timeline" name="timeline" required aria-describedby="timeline_error">
+              <select id="timeline" name="timeline" required aria-describedby="timeline_error" data-custom-select>
                 <option value="" disabled selected>Select timeline</option>
                 <option value="1_week">Within 1 week</option>
                 <option value="2_weeks">Within 2 weeks</option>
@@ -213,7 +212,7 @@
                   <circle cx="10.5" cy="10" r="1.5" fill="currentColor"/>
                 </svg>
               </span>
-              <select id="source" name="source" aria-describedby="source_error">
+              <select id="source" name="source" aria-describedby="source_error" data-custom-select>
                 <option value="" selected>Select source</option>
                 <option value="linkedin">LinkedIn</option>
                 <option value="referral">Referral</option>

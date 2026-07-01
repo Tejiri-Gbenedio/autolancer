@@ -17,6 +17,7 @@ const returnHomeButton = document.querySelector("#returnHomeButton");
 const panelHeading = document.querySelector(".panel-heading");
 const descriptionField = document.querySelector("#description");
 const descriptionCount = document.querySelector("#descriptionCount");
+const customSelects = [];
 const fieldLabels = {
   full_name: "Full name",
   email: "Email",
@@ -31,6 +32,13 @@ const fieldLabels = {
 };
 
 let isSubmitting = false;
+
+function closeCustomSelects(exceptSelect) {
+  customSelects.forEach((customSelect) => {
+    if (customSelect === exceptSelect) return;
+    customSelect.close();
+  });
+}
 
 function formatDisplayLeadId(leadId) {
   if (!leadId) return "-";
@@ -53,9 +61,11 @@ function setFieldError(name, message) {
   const fieldWrapper = field.closest(".field");
   const error = document.querySelector(`#${CSS.escape(name)}_error`);
   const hasError = Boolean(message);
+  const customTrigger = fieldWrapper?.querySelector(".custom-select-trigger");
 
   fieldWrapper?.classList.toggle("invalid", hasError);
   field.setAttribute("aria-invalid", String(hasError));
+  customTrigger?.setAttribute("aria-invalid", String(hasError));
   setElementText(error, message);
 }
 
@@ -88,7 +98,8 @@ function validateCurrentLead({ focusFirstInvalid = false } = {}) {
 
   if (focusFirstInvalid && !result.success) {
     const firstInvalid = result.errors.map((error) => getFieldElement(error.field)).find(Boolean);
-    firstInvalid?.focus();
+    const customTrigger = firstInvalid?.closest(".field")?.querySelector(".custom-select-trigger");
+    (customTrigger || firstInvalid)?.focus();
   }
 
   return result;
@@ -209,6 +220,7 @@ function resetForm() {
   copyReferenceButton.disabled = false;
   copyReferenceButton.textContent = "Copy reference";
   clearFieldErrors();
+  customSelects.forEach((customSelect) => customSelect.syncFromNative());
   updateDescriptionCount();
   getFieldElement("full_name")?.focus();
 }
@@ -231,10 +243,215 @@ function returnHome() {
   resetForm();
 }
 
+function enhanceSelect(select) {
+  const shell = select.closest(".select-shell");
+  if (!shell) return null;
+
+  shell.classList.add("is-enhanced");
+  select.tabIndex = -1;
+  select.setAttribute("aria-hidden", "true");
+
+  const label = select.id ? document.querySelector(`label[for="${CSS.escape(select.id)}"]`) : null;
+  const valueId = `${select.id}_value`;
+  const menuId = `${select.id}_menu`;
+
+  if (label && !label.id) {
+    label.id = `${select.id}_label`;
+  }
+
+  const custom = document.createElement("div");
+  custom.className = "custom-select";
+
+  const trigger = document.createElement("button");
+  trigger.id = `${select.id}_trigger`;
+  trigger.className = "custom-select-trigger";
+  trigger.type = "button";
+  trigger.setAttribute("aria-haspopup", "listbox");
+  trigger.setAttribute("aria-expanded", "false");
+  trigger.setAttribute("aria-controls", menuId);
+  trigger.setAttribute("aria-labelledby", [label?.id, valueId].filter(Boolean).join(" "));
+  trigger.setAttribute("aria-describedby", select.getAttribute("aria-describedby") || "");
+  trigger.setAttribute("aria-invalid", select.getAttribute("aria-invalid") || "false");
+
+  const value = document.createElement("span");
+  value.className = "custom-select-value";
+  value.id = valueId;
+  trigger.append(value);
+
+  const menu = document.createElement("ul");
+  menu.className = "custom-select-menu";
+  menu.id = menuId;
+  menu.role = "listbox";
+  menu.hidden = true;
+
+  const optionElements = Array.from(select.options).map((option, index) => {
+    const item = document.createElement("li");
+    item.className = "custom-select-option";
+    item.id = `${select.id}_option_${index}`;
+    item.role = "option";
+    item.dataset.value = option.value;
+    item.textContent = option.textContent;
+
+    if (!option.value) {
+      item.classList.add("is-placeholder");
+    }
+
+    if (option.disabled) {
+      item.setAttribute("aria-disabled", "true");
+    }
+
+    menu.append(item);
+    return item;
+  });
+
+  custom.append(trigger, menu);
+  select.after(custom);
+
+  let activeIndex = Math.max(0, select.selectedIndex);
+
+  function findEnabledIndex(startIndex, delta = 1) {
+    const optionCount = optionElements.length;
+    if (!optionCount) return 0;
+
+    let nextIndex = Math.min(Math.max(startIndex, 0), optionCount - 1);
+    for (let step = 0; step < optionCount; step += 1) {
+      if (!select.options[nextIndex]?.disabled) return nextIndex;
+      nextIndex = (nextIndex + delta + optionCount) % optionCount;
+    }
+
+    return Math.max(0, select.selectedIndex);
+  }
+
+  function updateDisplay() {
+    const selectedOption = select.options[select.selectedIndex] || select.options[0];
+    value.textContent = selectedOption?.textContent || "";
+    value.classList.toggle("custom-select-placeholder", !select.value);
+    trigger.setAttribute("aria-invalid", select.getAttribute("aria-invalid") || "false");
+
+    optionElements.forEach((item, index) => {
+      const selected = index === select.selectedIndex;
+      item.setAttribute("aria-selected", String(selected));
+      item.classList.toggle("is-active", index === activeIndex);
+    });
+
+    if (custom.classList.contains("is-open")) {
+      trigger.setAttribute("aria-activedescendant", optionElements[activeIndex]?.id || "");
+    }
+  }
+
+  function open() {
+    closeCustomSelects(api);
+    custom.classList.add("is-open");
+    trigger.setAttribute("aria-expanded", "true");
+    menu.hidden = false;
+    activeIndex = findEnabledIndex(select.selectedIndex, 1);
+    updateDisplay();
+  }
+
+  function close() {
+    custom.classList.remove("is-open");
+    trigger.setAttribute("aria-expanded", "false");
+    trigger.removeAttribute("aria-activedescendant");
+    menu.hidden = true;
+  }
+
+  function choose(index) {
+    const option = select.options[index];
+    if (!option || option.disabled) return;
+
+    select.selectedIndex = index;
+    select.dispatchEvent(new Event("change", { bubbles: true }));
+    activeIndex = index;
+    updateDisplay();
+    close();
+    trigger.focus();
+  }
+
+  function move(delta) {
+    const optionCount = optionElements.length;
+    if (!optionCount) return;
+
+    let nextIndex = activeIndex;
+    for (let step = 0; step < optionCount; step += 1) {
+      nextIndex = (nextIndex + delta + optionCount) % optionCount;
+      if (!select.options[nextIndex]?.disabled) break;
+    }
+
+    activeIndex = nextIndex;
+    updateDisplay();
+    optionElements[activeIndex]?.scrollIntoView({ block: "nearest" });
+  }
+
+  trigger.addEventListener("click", () => {
+    if (custom.classList.contains("is-open")) {
+      close();
+    } else {
+      open();
+    }
+  });
+
+  trigger.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+      event.preventDefault();
+      if (!custom.classList.contains("is-open")) open();
+      move(event.key === "ArrowDown" ? 1 : -1);
+      return;
+    }
+
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      if (!custom.classList.contains("is-open")) {
+        open();
+      } else {
+        choose(activeIndex);
+      }
+      return;
+    }
+
+    if (event.key === "Escape") {
+      close();
+    }
+  });
+
+  optionElements.forEach((item, index) => {
+    item.addEventListener("mouseenter", () => {
+      if (select.options[index]?.disabled) return;
+      activeIndex = index;
+      updateDisplay();
+    });
+
+    item.addEventListener("click", () => choose(index));
+  });
+
+  select.addEventListener("change", updateDisplay);
+
+  const api = { close, syncFromNative: updateDisplay };
+  updateDisplay();
+  return api;
+}
+
+document.querySelectorAll("select[data-custom-select]").forEach((select) => {
+  const customSelect = enhanceSelect(select);
+  if (customSelect) customSelects.push(customSelect);
+});
+
+document.addEventListener("click", (event) => {
+  if (!event.target.closest(".custom-select")) {
+    closeCustomSelects();
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    closeCustomSelects();
+  }
+});
+
 async function handleSubmit(event) {
   event.preventDefault();
   if (isSubmitting) return;
 
+  closeCustomSelects();
   clearAlert();
 
   const validation = validateCurrentLead({ focusFirstInvalid: true });
