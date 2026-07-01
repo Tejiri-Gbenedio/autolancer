@@ -10,9 +10,13 @@ const submissionStatus = document.querySelector("#submissionStatus");
 const statusText = document.querySelector("#statusText");
 const successScreen = document.querySelector("#successScreen");
 const successLeadId = document.querySelector("#successLeadId");
+const copyReferenceButton = document.querySelector("#copyReferenceButton");
 const handoffNote = document.querySelector("#handoffNote");
 const resetButton = document.querySelector("#resetButton");
+const returnHomeButton = document.querySelector("#returnHomeButton");
 const panelHeading = document.querySelector(".panel-heading");
+const descriptionField = document.querySelector("#description");
+const descriptionCount = document.querySelector("#descriptionCount");
 const fieldLabels = {
   full_name: "Full name",
   email: "Email",
@@ -27,6 +31,16 @@ const fieldLabels = {
 };
 
 let isSubmitting = false;
+
+function formatDisplayLeadId(leadId) {
+  if (!leadId) return "-";
+
+  const match = /^lead_(\d{14})(?:_(.+))?$/i.exec(leadId);
+  if (!match) return leadId.startsWith("AL-") ? leadId : `AL-${leadId}`;
+
+  const [, stamp] = match;
+  return `AL-${stamp.slice(0, 8)}-${stamp.slice(8, 14)}`;
+}
 
 function getFieldElement(name) {
   return form.elements.namedItem(name);
@@ -90,11 +104,20 @@ function clearAlert() {
   alertBox.hidden = true;
 }
 
+function updateDescriptionCount() {
+  if (!descriptionField || !descriptionCount) return;
+  descriptionCount.textContent = `${descriptionField.value.length} / 5000`;
+}
+
 function setBusyState(isBusy) {
   isSubmitting = isBusy;
   form.classList.toggle("is-busy", isBusy);
   submitButton.disabled = isBusy;
-  submitButton.querySelector("span").textContent = isBusy ? "Submitting..." : "Submit project";
+
+  const label = submitButton.querySelector(".button-label");
+  if (label) {
+    label.textContent = isBusy ? "Submitting..." : "Submit Project Brief";
+  }
 }
 
 function setStage(stageId) {
@@ -158,7 +181,9 @@ function showSuccess(leadPayload, handoffResult) {
   panelHeading.hidden = true;
   submissionStatus.hidden = true;
   successScreen.hidden = false;
-  successLeadId.textContent = leadPayload.lead_id;
+  successLeadId.textContent = formatDisplayLeadId(leadPayload.lead_id);
+  copyReferenceButton.disabled = false;
+  copyReferenceButton.textContent = "Copy reference";
 
   if (handoffResult?.warning) {
     handoffNote.textContent = handoffResult.warning;
@@ -181,8 +206,29 @@ function resetForm() {
   successScreen.hidden = true;
   submissionStatus.hidden = true;
   handoffNote.hidden = true;
+  copyReferenceButton.disabled = false;
+  copyReferenceButton.textContent = "Copy reference";
   clearFieldErrors();
+  updateDescriptionCount();
   getFieldElement("full_name")?.focus();
+}
+
+async function copyReferenceId() {
+  const referenceId = successLeadId.textContent?.trim();
+  if (!referenceId || referenceId === "-") return;
+
+  try {
+    await navigator.clipboard.writeText(referenceId);
+    copyReferenceButton.textContent = "Copied";
+  } catch (error) {
+    console.warn("Clipboard copy failed:", error);
+    copyReferenceButton.textContent = "Copy failed";
+  }
+}
+
+function returnHome() {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  resetForm();
 }
 
 async function handleSubmit(event) {
@@ -243,6 +289,8 @@ async function handleSubmit(event) {
 
 form.addEventListener("submit", handleSubmit);
 resetButton.addEventListener("click", resetForm);
+copyReferenceButton.addEventListener("click", copyReferenceId);
+returnHomeButton.addEventListener("click", returnHome);
 
 form.addEventListener("blur", (event) => {
   if (event.target?.name) {
@@ -265,3 +313,7 @@ form.addEventListener("change", (event) => {
 document.querySelectorAll("input, select, textarea").forEach((field) => {
   field.setAttribute("aria-invalid", "false");
 });
+
+descriptionField?.addEventListener("input", updateDescriptionCount);
+
+updateDescriptionCount();

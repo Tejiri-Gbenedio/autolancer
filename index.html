@@ -4,11 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="dark">
-  <meta name="description" content="AutoLancer secure project intake for autonomous freelance delivery.">
-  <title>AutoLancer | Project Intake</title>
+  <meta
+    name="description"
+    content="AutoLancer helps clients share a project brief and receive a tailored response within 24 hours."
+  >
+  <title>AutoLancer | Project Brief</title>
+  <link
+    rel="icon"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='4.5' y1='3' x2='27.5' y2='27.5' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='%23A855F7'/%3E%3Cstop offset='0.48' stop-color='%237C3AED'/%3E%3Cstop offset='1' stop-color='%2322D3EE'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M16 3 4.5 27.5h6.9L16 18l4.6 9.5h6.9L16 3Z' fill='url(%23g)'/%3E%3Ccircle cx='16' cy='23.1' r='3.25' fill='%230B0F1A'/%3E%3C/svg%3E"
+  >
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./styles.css">
   <script type="importmap">
     {
@@ -23,62 +30,99 @@
     <section class="brand-panel" aria-labelledby="portal-title">
       <nav class="topbar" aria-label="AutoLancer">
         <a class="wordmark" href="./" aria-label="AutoLancer home">
-          <span class="wordmark-mark" aria-hidden="true">A</span>
-          <span>AutoLancer</span>
+          <span class="wordmark-mark" aria-hidden="true">
+            <svg viewBox="0 0 32 32" focusable="false">
+              <path d="M16 3 4.5 27.5h6.9L16 18l4.6 9.5h6.9L16 3Z" fill="url(#markGradient)"/>
+              <circle cx="16" cy="23.1" r="3.25" fill="#0B0F1A"/>
+              <defs>
+                <linearGradient id="markGradient" x1="4.5" y1="3" x2="27.5" y2="27.5" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#A855F7"/>
+                  <stop offset="0.48" stop-color="#7C3AED"/>
+                  <stop offset="1" stop-color="#22D3EE"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </span>
+          <span class="wordmark-lockup">
+            <span class="wordmark-name">Auto<span>Lancer</span></span>
+            <span class="wordmark-tag">Autonomous AI freelance agent</span>
+          </span>
         </a>
-        <span class="availability">Intake online</span>
+        <span class="availability">AI-Powered</span>
       </nav>
 
-      <div class="hero-copy">
-        <p class="eyebrow">Autonomous freelance pipeline</p>
-        <h1 id="portal-title">Project intake for AI-led delivery.</h1>
-        <p class="lede">Share the brief once. AutoLancer stores it, prepares AI review, and routes the next step without losing the human approval layer.</p>
-      </div>
+      <div class="hero-layout">
+        <div class="hero-copy">
+          <p class="eyebrow">Client project intake</p>
+          <h1 id="portal-title">Let&rsquo;s build <span>something</span> exceptional.</h1>
+          <p class="lede">Tell us what you&rsquo;re trying to achieve. We&rsquo;ll handle the rest.</p>
 
-      <div class="agent-console" aria-label="AutoLancer pipeline overview">
-        <div class="console-header">
-          <span class="console-title">Pipeline state</span>
-          <span class="console-chip">Source of truth: Supabase</span>
+          <ul class="trust-badges" aria-label="AutoLancer benefits">
+            <li class="trust-badge">
+              <span class="badge-icon" aria-hidden="true">
+                <svg viewBox="0 0 20 20" focusable="false">
+                  <path d="m10 2.5 5.5 2v4.7c0 3.1-2 6-5.5 8.3-3.5-2.3-5.5-5.2-5.5-8.3V4.5l5.5-2Z" fill="none" stroke="currentColor" stroke-width="1.6"/>
+                  <path d="m7.6 9.8 1.7 1.8 3.2-3.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <span>Free project review</span>
+            </li>
+            <li class="trust-badge">
+              <span class="badge-icon" aria-hidden="true">
+                <svg viewBox="0 0 20 20" focusable="false">
+                  <path d="M5.5 3.5h6.8l2.2 2.2v10.8H5.5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                  <path d="M12.3 3.5v2.6h2.2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M7.8 10h4.5M7.8 13h4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                </svg>
+              </span>
+              <span>Tailored proposal</span>
+            </li>
+            <li class="trust-badge">
+              <span class="badge-icon" aria-hidden="true">
+                <svg viewBox="0 0 20 20" focusable="false">
+                  <path d="M10 2.8 4.8 10h3.3L7.3 17.2 14.8 8H11.3L12 2.8Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <span>Response within 24 hours</span>
+            </li>
+          </ul>
         </div>
 
-        <ol class="pipeline-list">
-          <li>
-            <span class="pipeline-index">01</span>
-            <div>
-              <strong>Lead captured</strong>
-              <span>Secure intake record created</span>
+        <div class="hero-visual" aria-hidden="true">
+          <div class="signal-pill">Live intake</div>
+          <div class="robot-stage">
+            <img
+              class="robot-image"
+              src="./assets/autolancer-glowing-robot.jpeg"
+              alt=""
+              width="1280"
+              height="960"
+              decoding="async"
+              fetchpriority="high"
+            >
+          </div>
+
+          <div class="brief-card">
+            <div class="brief-card-header">
+              <span class="brief-card-title">Project brief</span>
+              <span class="brief-status">Ready</span>
             </div>
-          </li>
-          <li>
-            <span class="pipeline-index">02</span>
-            <div>
-              <strong>AI qualification</strong>
-              <span>Scope, timeline, and fit reviewed</span>
+            <div class="brief-card-body">
+              <span class="brief-line brief-line-strong"></span>
+              <span class="brief-line"></span>
+              <span class="brief-line"></span>
+              <span class="brief-line brief-line-short"></span>
             </div>
-          </li>
-          <li>
-            <span class="pipeline-index">03</span>
-            <div>
-              <strong>Proposal draft</strong>
-              <span>Human approval before client send</span>
-            </div>
-          </li>
-          <li>
-            <span class="pipeline-index">04</span>
-            <div>
-              <strong>Invoice ready</strong>
-              <span>Acceptance moves the project forward</span>
-            </div>
-          </li>
-        </ol>
+          </div>
+        </div>
       </div>
     </section>
 
     <section class="intake-panel" aria-labelledby="form-title">
       <div class="panel-heading">
-        <p class="eyebrow">New project</p>
-        <h2 id="form-title">Tell AutoLancer what you need built.</h2>
-        <p>Your details are saved before any automation runs.</p>
+        <p class="eyebrow">Tell us about your project</p>
+        <h2 id="form-title">Share the details and we&rsquo;ll take it from here.</h2>
+        <p>We&rsquo;ll review your brief, prepare a tailored proposal, and reply within 24 hours.</p>
       </div>
 
       <div class="alert" id="formAlert" role="alert" hidden></div>
@@ -86,76 +130,143 @@
       <form id="leadForm" class="lead-form" novalidate>
         <div class="form-grid">
           <div class="field">
-            <label for="full_name">Full Name <span aria-hidden="true">*</span></label>
-            <input id="full_name" name="full_name" type="text" autocomplete="name" placeholder="Jane Doe" required aria-describedby="full_name_error">
+            <label for="full_name">Full name <span aria-hidden="true">*</span></label>
+            <div class="input-shell">
+              <span class="field-icon" aria-hidden="true">
+                <svg viewBox="0 0 20 20" focusable="false">
+                  <path d="M10 10a3.1 3.1 0 1 0 0-6.2 3.1 3.1 0 0 0 0 6.2Zm-5.1 6.1a5.1 5.1 0 0 1 10.2 0" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                </svg>
+              </span>
+              <input id="full_name" name="full_name" type="text" autocomplete="name" placeholder="Your full name" required aria-describedby="full_name_error">
+            </div>
             <p class="field-error" id="full_name_error"></p>
           </div>
 
           <div class="field">
-            <label for="email">Email <span aria-hidden="true">*</span></label>
-            <input id="email" name="email" type="email" autocomplete="email" placeholder="jane@company.com" required aria-describedby="email_error">
+            <label for="email">Email address <span aria-hidden="true">*</span></label>
+            <div class="input-shell">
+              <span class="field-icon" aria-hidden="true">
+                <svg viewBox="0 0 20 20" focusable="false">
+                  <path d="M3.5 5.3h13v9.4h-13z" fill="none" stroke="currentColor" stroke-width="1.6" rx="2"/>
+                  <path d="m4.7 6.4 5.3 4.3 5.3-4.3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required aria-describedby="email_error">
+            </div>
             <p class="field-error" id="email_error"></p>
           </div>
 
           <div class="field">
-            <label for="project_type">Project Type <span aria-hidden="true">*</span></label>
-            <select id="project_type" name="project_type" required aria-describedby="project_type_error">
-              <option value="" disabled selected>Select one</option>
-              <option value="automation">Automation / workflow</option>
-              <option value="web_development">Website / web app</option>
-              <option value="chatbot">Chatbot / AI assistant</option>
-              <option value="integration">API / integration</option>
-              <option value="other">Other</option>
-            </select>
+            <label for="project_type">Project type <span aria-hidden="true">*</span></label>
+            <div class="input-shell select-shell">
+              <span class="field-icon" aria-hidden="true">
+                <svg viewBox="0 0 20 20" focusable="false">
+                  <path d="M4.5 5.5h11v9h-11z" fill="none" stroke="currentColor" stroke-width="1.6"/>
+                  <path d="M7.2 8.3h5.6M7.2 11.5h3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                </svg>
+              </span>
+              <select id="project_type" name="project_type" required aria-describedby="project_type_error">
+                <option value="" disabled selected>Select project type</option>
+                <option value="automation">Automation / workflow</option>
+                <option value="web_development">Website / web app</option>
+                <option value="chatbot">Chatbot / AI assistant</option>
+                <option value="integration">API / integration</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
             <p class="field-error" id="project_type_error"></p>
           </div>
 
           <div class="field">
-            <label for="budget_range">Budget <span aria-hidden="true">*</span></label>
-            <select id="budget_range" name="budget_range" required aria-describedby="budget_range_error">
-              <option value="" disabled selected>Select range</option>
-              <option value="under_500">Under $500</option>
-              <option value="500_1000">$500 - $1,000</option>
-              <option value="1000_3000">$1,000 - $3,000</option>
-              <option value="3000_plus">$3,000+</option>
-            </select>
+            <label for="budget_range">Budget range <span aria-hidden="true">*</span></label>
+            <div class="input-shell select-shell">
+              <span class="field-icon" aria-hidden="true">
+                <svg viewBox="0 0 20 20" focusable="false">
+                  <path d="M4 6.2h12v7.6H4z" fill="none" stroke="currentColor" stroke-width="1.6"/>
+                  <path d="M4 8.3h12" fill="none" stroke="currentColor" stroke-width="1.6"/>
+                  <circle cx="10" cy="10" r="1.4" fill="currentColor"/>
+                </svg>
+              </span>
+              <select id="budget_range" name="budget_range" required aria-describedby="budget_range_error">
+                <option value="" disabled selected>Select budget range</option>
+                <option value="under_500">Under $500</option>
+                <option value="500_1000">$500 - $1,000</option>
+                <option value="1000_3000">$1,000 - $3,000</option>
+                <option value="3000_plus">$3,000+</option>
+              </select>
+            </div>
             <p class="field-error" id="budget_range_error"></p>
           </div>
 
           <div class="field">
             <label for="timeline">Timeline <span aria-hidden="true">*</span></label>
-            <select id="timeline" name="timeline" required aria-describedby="timeline_error">
-              <option value="" disabled selected>When do you need it?</option>
-              <option value="1_week">Within 1 week</option>
-              <option value="2_weeks">Within 2 weeks</option>
-              <option value="1_month">Within 1 month</option>
-              <option value="flexible">Flexible / no rush</option>
-            </select>
+            <div class="input-shell select-shell">
+              <span class="field-icon" aria-hidden="true">
+                <svg viewBox="0 0 20 20" focusable="false">
+                  <circle cx="10" cy="10" r="5.8" fill="none" stroke="currentColor" stroke-width="1.6"/>
+                  <path d="M10 6.7v3.8l2.6 1.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                </svg>
+              </span>
+              <select id="timeline" name="timeline" required aria-describedby="timeline_error">
+                <option value="" disabled selected>Select timeline</option>
+                <option value="1_week">Within 1 week</option>
+                <option value="2_weeks">Within 2 weeks</option>
+                <option value="1_month">Within 1 month</option>
+                <option value="flexible">Flexible / no rush</option>
+              </select>
+            </div>
             <p class="field-error" id="timeline_error"></p>
           </div>
 
           <div class="field">
-            <label for="source">Lead Source</label>
-            <select id="source" name="source" aria-describedby="source_error">
-              <option value="" selected>Select one</option>
-              <option value="linkedin">LinkedIn</option>
-              <option value="referral">Referral</option>
-              <option value="twitter">Twitter / X</option>
-              <option value="google">Google search</option>
-              <option value="other">Other</option>
-            </select>
+            <label for="source">How did you hear about us?</label>
+            <div class="input-shell select-shell">
+              <span class="field-icon" aria-hidden="true">
+                <svg viewBox="0 0 20 20" focusable="false">
+                  <path d="M8.3 4.5 4.8 10l3.5 5.5h4.3l3.5-5.5-3.5-5.5H8.3Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                  <circle cx="10.5" cy="10" r="1.5" fill="currentColor"/>
+                </svg>
+              </span>
+              <select id="source" name="source" aria-describedby="source_error">
+                <option value="" selected>Select source</option>
+                <option value="linkedin">LinkedIn</option>
+                <option value="referral">Referral</option>
+                <option value="twitter">Twitter / X</option>
+                <option value="google">Google search</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
             <p class="field-error" id="source_error"></p>
           </div>
 
           <div class="field field-wide">
-            <label for="description">Project Description <span aria-hidden="true">*</span></label>
-            <textarea id="description" name="description" rows="6" placeholder="Tell us what you need built and what problem it should solve." required aria-describedby="description_error"></textarea>
+            <div class="field-head">
+              <label for="description">Project description <span aria-hidden="true">*</span></label>
+              <span class="character-count" id="descriptionCount">0 / 5000</span>
+            </div>
+            <div class="input-shell textarea-shell">
+              <span class="field-icon" aria-hidden="true">
+                <svg viewBox="0 0 20 20" focusable="false">
+                  <path d="M5 4.8h10v10.4H5z" fill="none" stroke="currentColor" stroke-width="1.6"/>
+                  <path d="M7.5 8h5M7.5 11h5M7.5 14h3.2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                </svg>
+              </span>
+              <textarea id="description" name="description" rows="6" maxlength="5000" placeholder="Tell us about your project, goals, and any specific requirements..." required aria-describedby="description_error"></textarea>
+            </div>
             <p class="field-error" id="description_error"></p>
           </div>
 
           <div class="field field-wide">
-            <label for="existing_tools">Existing Tools</label>
-            <input id="existing_tools" name="existing_tools" type="text" placeholder="Airtable, Shopify, Zapier, Google Sheets" aria-describedby="existing_tools_error">
+            <label for="existing_tools">Existing tools / platforms (optional)</label>
+            <div class="input-shell">
+              <span class="field-icon" aria-hidden="true">
+                <svg viewBox="0 0 20 20" focusable="false">
+                  <path d="M4.8 6.2h10.4v7.6H4.8z" fill="none" stroke="currentColor" stroke-width="1.6"/>
+                  <path d="M7 9.2h1.6M10.2 9.2h2.8M7 12h4.2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                </svg>
+              </span>
+              <input id="existing_tools" name="existing_tools" type="text" maxlength="1000" placeholder="e.g. Zapier, Airtable, Make, Notion, etc." aria-describedby="existing_tools_error">
+            </div>
             <p class="field-error" id="existing_tools_error"></p>
           </div>
         </div>
@@ -163,49 +274,138 @@
         <div class="submission-status" id="submissionStatus" aria-live="polite" aria-atomic="true" hidden>
           <div class="status-topline">
             <span class="status-spinner" aria-hidden="true"></span>
-            <span id="statusText">Checking your project...</span>
+            <span id="statusText">Reviewing your brief...</span>
           </div>
           <ol class="stage-list" aria-label="Submission progress">
-            <li data-stage="checking" class="active">Checking your project...</li>
-            <li data-stage="saving">Saving your request...</li>
-            <li data-stage="preparing">Preparing AI review...</li>
-            <li data-stage="connecting">Connecting with AutoLancer...</li>
+            <li data-stage="checking" class="active">Reviewing your brief...</li>
+            <li data-stage="saving">Saving securely...</li>
+            <li data-stage="preparing">Preparing next steps...</li>
+            <li data-stage="connecting">Sending confirmation...</li>
           </ol>
         </div>
 
-        <button class="submit-button" id="submitButton" type="submit">
-          <span>Submit project</span>
-          <svg aria-hidden="true" viewBox="0 0 20 20" focusable="false">
-            <path d="M4 10h11m0 0-4-4m4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
+        <div class="form-footer">
+          <div class="form-note">
+            <span class="form-note-icon" aria-hidden="true">
+              <svg viewBox="0 0 20 20" focusable="false">
+                <path d="M6.2 8V6.6a3.8 3.8 0 1 1 7.6 0V8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                <path d="M4.7 8h10.6v7.3H4.7z" fill="none" stroke="currentColor" stroke-width="1.6"/>
+              </svg>
+            </span>
+            <span>Your information is secure and never shared.</span>
+          </div>
+
+          <button class="submit-button" id="submitButton" type="submit">
+            <span class="button-label">Submit Project Brief</span>
+            <span class="button-spinner" aria-hidden="true"></span>
+            <svg aria-hidden="true" viewBox="0 0 20 20" focusable="false">
+              <path d="M4 10h11m0 0-4-4m4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
       </form>
 
       <section class="success-screen" id="successScreen" tabindex="-1" aria-labelledby="successTitle" hidden>
-        <div class="success-mark" aria-hidden="true">
-          <svg viewBox="0 0 24 24" focusable="false">
-            <path d="m5 12 4 4L19 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
+        <div class="success-hero">
+          <div class="success-visual" aria-hidden="true">
+            <img
+              class="success-robot"
+              src="./assets/autolancer-glowing-robot.jpeg"
+              alt=""
+              width="1280"
+              height="960"
+              decoding="async"
+              loading="lazy"
+            >
+            <div class="success-mark">
+              <svg viewBox="0 0 24 24" focusable="false">
+                <path d="m5 12 4 4L19 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+          <p class="eyebrow">Thank you!</p>
+          <h2 id="successTitle">Your project has been <span>received.</span></h2>
+          <p class="success-summary">We&rsquo;ll review your requirements and send a tailored proposal within 24 hours.</p>
         </div>
-        <p class="eyebrow">Success</p>
-        <h2 id="successTitle">Project Received</h2>
-        <p>Your project has been securely received.</p>
-        <p>AutoLancer is now reviewing your requirements.</p>
 
         <div class="confirmation-meta">
-          <div>
-            <span>Lead ID</span>
-            <strong id="successLeadId">-</strong>
-          </div>
-          <div>
-            <span>Expected response time</span>
-            <strong>Within 24 hours</strong>
-          </div>
+          <article class="meta-card">
+            <div class="meta-icon" aria-hidden="true">
+              <svg viewBox="0 0 20 20" focusable="false">
+                <path d="M9.2 2.8h5.1l2.9 2.9v5.1L10 17.9 2.8 10.7V5.7l2.9-2.9h3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                <circle cx="12.8" cy="7" r="1.2" fill="currentColor"/>
+              </svg>
+            </div>
+            <div class="meta-content">
+              <span>Reference ID</span>
+              <strong id="successLeadId">-</strong>
+              <p>Save this ID for your records.</p>
+            </div>
+            <button class="ghost-button" id="copyReferenceButton" type="button">Copy reference</button>
+          </article>
+
+          <article class="meta-card">
+            <div class="meta-icon" aria-hidden="true">
+              <svg viewBox="0 0 20 20" focusable="false">
+                <circle cx="10" cy="10" r="6.2" fill="none" stroke="currentColor" stroke-width="1.6"/>
+                <path d="M10 6.4v4l2.7 1.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="meta-content">
+              <span>Expected response</span>
+              <strong>Within 24 hours</strong>
+              <p>We&rsquo;ll be in touch soon.</p>
+            </div>
+          </article>
         </div>
 
-        <p class="handoff-note" id="handoffNote" hidden></p>
+        <div class="success-actions">
+          <button class="submit-button" id="resetButton" type="button">
+            <span class="button-label">Submit another project</span>
+            <span class="button-spinner" aria-hidden="true"></span>
+            <svg aria-hidden="true" viewBox="0 0 20 20" focusable="false">
+              <path d="M4 10h11m0 0-4-4m4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <button class="secondary-button" id="returnHomeButton" type="button">Return Home</button>
+        </div>
 
-        <button class="secondary-button" id="resetButton" type="button">Submit another project</button>
+        <section class="next-steps" aria-labelledby="nextStepsTitle">
+          <h3 id="nextStepsTitle">What happens next?</h3>
+          <div class="next-steps-grid">
+            <article class="step-card">
+              <span class="step-icon" aria-hidden="true">
+                <svg viewBox="0 0 20 20" focusable="false">
+                  <circle cx="9" cy="9" r="4.6" fill="none" stroke="currentColor" stroke-width="1.6"/>
+                  <path d="m12.5 12.5 3 3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                </svg>
+              </span>
+              <strong>Review</strong>
+              <p>We&rsquo;ll review your requirements.</p>
+            </article>
+            <article class="step-card">
+              <span class="step-icon" aria-hidden="true">
+                <svg viewBox="0 0 20 20" focusable="false">
+                  <path d="M5.2 4.8h7.1l2.5 2.5v7.9H5.2z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                  <path d="M12.3 4.8v2.5h2.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <strong>Prepare</strong>
+              <p>We&rsquo;ll shape a tailored proposal.</p>
+            </article>
+            <article class="step-card">
+              <span class="step-icon" aria-hidden="true">
+                <svg viewBox="0 0 20 20" focusable="false">
+                  <path d="m4 10.2 11.7-5-4.5 11.1-1.7-4.4L4 10.2Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <strong>Respond</strong>
+              <p>We&rsquo;ll contact you within 24 hours.</p>
+            </article>
+          </div>
+        </section>
+
+        <p class="handoff-note" id="handoffNote" hidden></p>
       </section>
     </section>
   </main>

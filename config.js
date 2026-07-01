@@ -7,10 +7,10 @@ export const APP_CONFIG = Object.freeze({
     notifyN8n: "/.netlify/functions/notify-n8n",
   }),
   submissionStages: Object.freeze([
-    { id: "checking", label: "Checking your project..." },
-    { id: "saving", label: "Saving your request..." },
-    { id: "preparing", label: "Preparing AI review..." },
-    { id: "connecting", label: "Connecting with AutoLancer..." },
+    { id: "checking", label: "Reviewing your brief..." },
+    { id: "saving", label: "Saving securely..." },
+    { id: "preparing", label: "Preparing next steps..." },
+    { id: "connecting", label: "Sending confirmation..." },
   ]),
 });
 
