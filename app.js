@@ -23,13 +23,21 @@ const fieldLabels = {
   email: "Email",
   phone: "Phone",
   project_type: "Project type",
+  project_type_value: "Project type",
   budget_range: "Budget",
+  budget_range_value: "Budget",
   timeline: "Timeline",
+  timeline_value: "Timeline",
   source: "Lead source",
+  source_value: "Lead source",
   description: "Project description",
   existing_tools: "Existing tools",
   website_url: "Website URL",
+  intake_channel: "Intake channel",
+  intake_channel_value: "Intake channel",
 };
+
+const selectFieldNames = ["project_type", "budget_range", "timeline", "source"];
 
 let isSubmitting = false;
 
@@ -52,6 +60,20 @@ function formatDisplayLeadId(leadId) {
 
 function getFieldElement(name) {
   return form.elements.namedItem(name);
+}
+
+function getSelectFieldOption(name) {
+  const select = getFieldElement(name);
+  if (!(select instanceof HTMLSelectElement) || !select.value) {
+    return { label: null, value: null };
+  }
+
+  const selectedOption = select.options[select.selectedIndex];
+
+  return {
+    label: selectedOption?.textContent?.trim() || null,
+    value: select.value,
+  };
 }
 
 function setFieldError(name, message) {
@@ -77,10 +99,18 @@ function clearFieldErrors() {
 
 function collectLeadPayload() {
   const formData = new FormData(form);
+  const payload = Object.fromEntries(formData.entries());
+
+  for (const fieldName of selectFieldNames) {
+    const option = getSelectFieldOption(fieldName);
+    payload[fieldName] = option.label;
+    payload[`${fieldName}_value`] = option.value;
+  }
 
   return {
-    ...Object.fromEntries(formData.entries()),
-    intake_channel: APP_CONFIG.intakeChannel,
+    ...payload,
+    intake_channel: APP_CONFIG.intakeChannel.label,
+    intake_channel_value: APP_CONFIG.intakeChannel.value,
     status: APP_CONFIG.defaultStatus,
     n8n_status: APP_CONFIG.initialN8nStatus,
   };

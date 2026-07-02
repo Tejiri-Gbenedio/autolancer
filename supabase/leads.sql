@@ -22,15 +22,20 @@ create table if not exists public.leads (
   phone text,
 
   project_type text not null,
+  project_type_value text not null,
   budget_range text not null,
+  budget_range_value text not null,
   timeline text not null,
-  source text not null default 'unknown',
+  timeline_value text not null,
+  source text,
+  source_value text,
 
   description text not null,
   existing_tools text,
   website_url text,
 
-  intake_channel text not null default 'web_form',
+  intake_channel text not null default 'Web Form',
+  intake_channel_value text not null default 'web_form',
   status text not null default 'new',
   n8n_status text not null default 'pending',
 
@@ -57,6 +62,13 @@ create table if not exists public.leads (
   constraint leads_website_url_format check (website_url is null or website_url ~* '^https?://[^[:space:]/$.?#].[^[:space:]]*$'),
 
   constraint leads_project_type_check check (project_type in (
+    'Automation / workflow',
+    'Website / web app',
+    'Chatbot / AI assistant',
+    'API / integration',
+    'Other'
+  )),
+  constraint leads_project_type_value_check check (project_type_value in (
     'automation',
     'web_development',
     'chatbot',
@@ -64,24 +76,71 @@ create table if not exists public.leads (
     'other'
   )),
   constraint leads_budget_range_check check (budget_range in (
+    'Under $500',
+    '$500 - $1,000',
+    '$1,000 - $3,000',
+    '$3,000+'
+  )),
+  constraint leads_budget_range_value_check check (budget_range_value in (
     'under_500',
     '500_1000',
     '1000_3000',
     '3000_plus'
   )),
   constraint leads_timeline_check check (timeline in (
+    'Within 1 week',
+    'Within 2 weeks',
+    'Within 1 month',
+    'Flexible / no rush'
+  )),
+  constraint leads_timeline_value_check check (timeline_value in (
     '1_week',
     '2_weeks',
     '1_month',
     'flexible'
   )),
-  constraint leads_source_check check (source in (
+  constraint leads_source_check check (source is null or source in (
+    'LinkedIn',
+    'Referral',
+    'Twitter / X',
+    'Google search',
+    'Other'
+  )),
+  constraint leads_source_value_check check (source_value is null or source_value in (
     'linkedin',
     'referral',
     'twitter',
     'google',
-    'other',
-    'unknown'
+    'other'
+  )),
+  constraint leads_intake_channel_check check (intake_channel = 'Web Form'),
+  constraint leads_intake_channel_value_check check (intake_channel_value = 'web_form'),
+  constraint leads_project_type_pair_check check (
+    (project_type = 'Automation / workflow' and project_type_value = 'automation')
+    or (project_type = 'Website / web app' and project_type_value = 'web_development')
+    or (project_type = 'Chatbot / AI assistant' and project_type_value = 'chatbot')
+    or (project_type = 'API / integration' and project_type_value = 'integration')
+    or (project_type = 'Other' and project_type_value = 'other')
+  ),
+  constraint leads_budget_range_pair_check check (
+    (budget_range = 'Under $500' and budget_range_value = 'under_500')
+    or (budget_range = '$500 - $1,000' and budget_range_value = '500_1000')
+    or (budget_range = '$1,000 - $3,000' and budget_range_value = '1000_3000')
+    or (budget_range = '$3,000+' and budget_range_value = '3000_plus')
+  ),
+  constraint leads_timeline_pair_check check (
+    (timeline = 'Within 1 week' and timeline_value = '1_week')
+    or (timeline = 'Within 2 weeks' and timeline_value = '2_weeks')
+    or (timeline = 'Within 1 month' and timeline_value = '1_month')
+    or (timeline = 'Flexible / no rush' and timeline_value = 'flexible')
+  ),
+  constraint leads_source_pair_check check (
+    (source is null and source_value is null)
+    or (source = 'LinkedIn' and source_value = 'linkedin')
+    or (source = 'Referral' and source_value = 'referral')
+    or (source = 'Twitter / X' and source_value = 'twitter')
+    or (source = 'Google search' and source_value = 'google')
+    or (source = 'Other' and source_value = 'other')
   )),
   constraint leads_status_check check (status in (
     'new',
@@ -127,6 +186,7 @@ create index if not exists leads_created_at_idx on public.leads (created_at desc
 create index if not exists leads_status_idx on public.leads (status);
 create index if not exists leads_email_idx on public.leads (email);
 create index if not exists leads_project_type_idx on public.leads (project_type);
+create index if not exists leads_project_type_value_idx on public.leads (project_type_value);
 create index if not exists leads_n8n_status_idx on public.leads (n8n_status);
 create index if not exists leads_status_created_at_idx on public.leads (status, created_at desc);
 create index if not exists leads_n8n_status_created_at_idx on public.leads (n8n_status, created_at desc);
@@ -146,13 +206,18 @@ grant insert (
   email,
   phone,
   project_type,
+  project_type_value,
   budget_range,
+  budget_range_value,
   timeline,
+  timeline_value,
   source,
+  source_value,
   description,
   existing_tools,
   website_url,
   intake_channel,
+  intake_channel_value,
   status,
   n8n_status
 ) on table public.leads to anon;
@@ -164,7 +229,8 @@ on public.leads
 for insert
 to anon
 with check (
-  intake_channel = 'web_form'
+  intake_channel = 'Web Form'
+  and intake_channel_value = 'web_form'
   and status = 'new'
   and n8n_status = 'pending'
   and n8n_last_error is null

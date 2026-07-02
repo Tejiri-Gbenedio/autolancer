@@ -54,6 +54,36 @@ const SOURCES = {
   other: 'other',
 };
 
+const PROJECT_TYPE_LABELS = {
+  automation: 'Automation / workflow',
+  web_development: 'Website / web app',
+  chatbot: 'Chatbot / AI assistant',
+  integration: 'API / integration',
+  other: 'Other',
+};
+
+const BUDGET_LABELS = {
+  under_500: 'Under $500',
+  '500_1000': '$500 - $1,000',
+  '1000_3000': '$1,000 - $3,000',
+  '3000_plus': '$3,000+',
+};
+
+const TIMELINE_LABELS = {
+  '1_week': 'Within 1 week',
+  '2_weeks': 'Within 2 weeks',
+  '1_month': 'Within 1 month',
+  flexible: 'Flexible / no rush',
+};
+
+const SOURCE_LABELS = {
+  linkedin: 'LinkedIn',
+  referral: 'Referral',
+  twitter: 'Twitter / X',
+  google: 'Google search',
+  other: 'Other',
+};
+
 function firstValue(raw, keys) {
   for (const key of keys) {
     if (raw[key] !== undefined && raw[key] !== null && String(raw[key]).trim() !== '') {
@@ -114,7 +144,7 @@ function normalizeTimeline(value) {
 
 function normalizeSource(value) {
   const key = compactKey(value);
-  if (!key) return 'unknown';
+  if (!key || key === 'unknown') return '';
   if (SOURCES[key]) return SOURCES[key];
   if (key.includes('linkedin')) return 'linkedin';
   if (key.includes('refer')) return 'referral';
@@ -130,17 +160,29 @@ function createLeadId() {
 }
 
 function normalizeLead(raw) {
+  const projectTypeValue = normalizeProjectType(firstValue(raw, ['project_type_value', 'project_type', 'project', 'type', 'service_needed']));
+  const budgetRangeValue = normalizeBudget(firstValue(raw, ['budget_range_value', 'budget_range', 'budget', 'budget_text']));
+  const timelineValue = normalizeTimeline(firstValue(raw, ['timeline_value', 'timeline', 'deadline', 'delivery_window']));
+  const sourceRaw = firstValue(raw, ['source_value', 'source', 'lead_source', 'how_found']);
+  const sourceValue = sourceRaw ? normalizeSource(sourceRaw) : '';
+  const intakeChannelValue = 'web_form';
+
   const lead = {
     lead_id: firstValue(raw, ['lead_id', 'id']) || createLeadId(),
     full_name: firstValue(raw, ['full_name', 'name', 'client_name', 'from_name']),
     email: firstValue(raw, ['email', 'email_address', 'client_email']).toLowerCase(),
-    project_type: normalizeProjectType(firstValue(raw, ['project_type', 'project', 'type', 'service_needed'])),
-    budget_range: normalizeBudget(firstValue(raw, ['budget_range', 'budget', 'budget_text'])),
-    timeline: normalizeTimeline(firstValue(raw, ['timeline', 'deadline', 'delivery_window'])),
-    source: normalizeSource(firstValue(raw, ['source', 'lead_source', 'how_found'])),
+    project_type: PROJECT_TYPE_LABELS[projectTypeValue],
+    project_type_value: projectTypeValue,
+    budget_range: BUDGET_LABELS[budgetRangeValue],
+    budget_range_value: budgetRangeValue,
+    timeline: TIMELINE_LABELS[timelineValue],
+    timeline_value: timelineValue,
+    source: sourceValue ? SOURCE_LABELS[sourceValue] : '',
+    source_value: sourceValue,
     description: firstValue(raw, ['description', 'project_description', 'message', 'brief']),
     existing_tools: firstValue(raw, ['existing_tools', 'tools', 'platforms', 'stack']),
-    intake_channel: firstValue(raw, ['intake_channel', 'channel']) || 'web_form',
+    intake_channel: 'Web Form',
+    intake_channel_value: intakeChannelValue,
     created_at: firstValue(raw, ['created_at', 'submitted_at']) || new Date().toISOString(),
     status: firstValue(raw, ['status']) || 'new',
     n8n_status: firstValue(raw, ['n8n_status']) || 'pending',

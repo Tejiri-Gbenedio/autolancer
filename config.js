@@ -1,5 +1,8 @@
 export const APP_CONFIG = Object.freeze({
-  intakeChannel: "web_form",
+  intakeChannel: Object.freeze({
+    label: "Web Form",
+    value: "web_form",
+  }),
   defaultStatus: "new",
   initialN8nStatus: "pending",
   endpoints: Object.freeze({

@@ -90,7 +90,8 @@ If the n8n handoff is unavailable, the lead still remains stored in Supabase and
 |-- supabase/
 |   |-- leads.sql
 |   `-- migrations/
-|       `-- 20260701030000_harden_public_lead_inserts.sql
+|       |-- 20260701030000_harden_public_lead_inserts.sql
+|       `-- 20260702090000_add_select_label_value_payload.sql
 |-- .env.example
 |-- netlify.toml
 |-- package.json
@@ -129,6 +130,8 @@ These are the fields visible in the public intake form today:
 
 The shared lead contract also reserves optional fields such as `phone` and `website_url` for future channels or later UI expansion, but they are not rendered in the current public form.
 
+Select fields submit both the visible human label and the machine value used by automation. For example, `project_type` stores `Website / web app`, while `project_type_value` stores `web_development`. The hidden intake channel follows the same pattern with `intake_channel` as `Web Form` and `intake_channel_value` as `web_form`.
+
 ## Backend pipeline
 
 The repository does not yet contain the full downstream automation workflow, but it already preserves compatibility for that planned pipeline.
@@ -156,14 +159,19 @@ The normalized payload shape used by the current browser and function layers is:
   "full_name": "Jane Doe",
   "email": "jane@company.com",
   "phone": null,
-  "project_type": "automation",
-  "budget_range": "1000_3000",
-  "timeline": "2_weeks",
-  "source": "linkedin",
+  "project_type": "Automation / workflow",
+  "project_type_value": "automation",
+  "budget_range": "$1,000 - $3,000",
+  "budget_range_value": "1000_3000",
+  "timeline": "Within 2 weeks",
+  "timeline_value": "2_weeks",
+  "source": "LinkedIn",
+  "source_value": "linkedin",
   "description": "Project brief...",
   "existing_tools": "Airtable, Gmail",
   "website_url": null,
-  "intake_channel": "web_form",
+  "intake_channel": "Web Form",
+  "intake_channel_value": "web_form",
   "status": "new",
   "n8n_status": "pending"
 }
@@ -204,6 +212,7 @@ Supabase is the system of record for leads.
 
 - [`supabase/leads.sql`](./supabase/leads.sql): base table, constraints, indexes, trigger, grants, and RLS policy
 - [`supabase/migrations/20260701030000_harden_public_lead_inserts.sql`](./supabase/migrations/20260701030000_harden_public_lead_inserts.sql): follow-up hardening migration
+- [`supabase/migrations/20260702090000_add_select_label_value_payload.sql`](./supabase/migrations/20260702090000_add_select_label_value_payload.sql): select label/value payload migration
 - [`supabase.js`](./supabase.js): browser client and insert helper
 
 ### Table behavior
@@ -249,7 +258,7 @@ The app is designed for Netlify.
 ### Deploy flow
 
 1. Create the Supabase schema with `supabase/leads.sql`.
-2. Apply the hardening migration if your database does not already include it.
+2. Apply the migrations if your database does not already include them.
 3. Set environment variables in Netlify.
 4. Deploy the repo to Netlify.
 5. Submit a test lead.

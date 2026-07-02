@@ -88,5 +88,5 @@ with check (
   and updated_at = created_at
   and n8n_last_error is null
   and n8n_delivered_at is null
-  and intake_channel = 'web_form'
+  and intake_channel = 'Web Form'
 );
